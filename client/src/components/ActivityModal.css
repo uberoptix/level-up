@@ -1,0 +1,208 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: auto;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 15px;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  font-family: 'Share Tech Mono', monospace;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #7f8c8d;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: #2c3e50;
+}
+
+.modal-title {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.modal-description {
+  color: #34495e;
+  margin-bottom: 30px;
+  line-height: 1.6;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1rem;
+  font-weight: normal;
+}
+
+.modal-points {
+  color: #3498db;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.button-group {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.retro-button {
+  padding: 10px 24px;
+  border: 3px solid;
+  border-radius: 8px;
+  background: #1a2233;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1.4rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  margin: 0 8px;
+  margin-top: 10px;
+  transition: background 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.retro-button.complete {
+  color: #2ed573;
+  border-color: #2ed573;
+  box-shadow: 0 0 8px #2ed573, 0 0 2px #fff;
+}
+
+.retro-button.incomplete {
+  color: #ff3860;
+  border-color: #ff3860;
+  box-shadow: 0 0 8px #ff3860, 0 0 2px #fff;
+}
+
+.retro-button.complete:hover {
+  background: #2ed573;
+  color: #1a2233;
+}
+
+.retro-button.incomplete:hover {
+  background: #ff3860;
+  color: #1a2233;
+}
+
+.retro-button.complete:active {
+  background: #1fa463;
+  color: #fff;
+}
+
+.retro-button.incomplete:active {
+  background: #c82333;
+  color: #fff;
+}
+
+.retro-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.timestamp {
+  color: #7f8c8d;
+  font-size: 1rem;
+  min-height: 1.2em;
+  margin-top: 10px;
+  font-style: italic;
+  text-align: center;
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: normal;
+}
+
+/* iOS Safari fixes */
+@supports (-webkit-touch-callout: none) {
+  .modal-overlay, .modal-content {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+  }
+}
+
+.counter-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  padding: 10px;
+}
+
+.counter-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: all 0.2s ease;
+  margin: 0 15px;
+}
+
+.counter-button:active {
+  transform: scale(0.95);
+}
+
+.counter-button.decrement {
+  background-color: #ff3860;
+  color: #1a2233;
+  box-shadow: 0 0 8px rgba(255,56,96,0.7);
+}
+
+.counter-button.decrement:hover {
+  background-color: #ff1f4b;
+}
+
+.counter-button.decrement:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.5;
+  box-shadow: none;
+}
+
+.counter-button.increment {
+  background-color: #22cc88;
+  color: #1a2233;
+  box-shadow: 0 0 8px rgba(34,204,136,0.7);
+}
+
+.counter-button.increment:hover {
+  background-color: #1eb379;
+}
+
+.counter-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  min-width: 40px;
+  text-align: center;
+} 

@@ -1,0 +1,76 @@
+/* Activity Card Styles */
+.activity-card {
+  background-color: #1a2233;
+  border: 2px solid #00eaff;
+  border-radius: 10px;
+  padding: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.activity-card.completed {
+  background-color: #1a3322;
+  border-color: #2ed573;
+}
+
+/* Safari Activity Card - optimized for iOS */
+.safari-activity-card {
+  background-color: #1a2233;
+  border: 2px solid #00eaff;
+  border-radius: 10px;
+  padding: 15px;
+  cursor: pointer;
+  box-sizing: border-box;
+  width: 100%;
+  margin-bottom: 16px;
+  transition: transform 0.2s ease;
+}
+
+.safari-activity-card.completed {
+  background-color: #1a3322;
+  border-color: #2ed573;
+}
+
+.safari-card-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.safari-card-title {
+  font-size: 1.4rem;
+  font-family: 'Share Tech Mono', monospace;
+  color: #e6e6e6;
+  margin-bottom: 10px;
+}
+
+.safari-card-points {
+  font-size: 1.2rem;
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: bold;
+  color: #00eaff;
+  margin-bottom: 7px;
+}
+
+.safari-activity-card.completed .safari-card-points {
+  color: #2ed573;
+}
+
+.safari-card-status-text {
+  font-size: 1rem;
+  font-family: 'Share Tech Mono', monospace;
+  color: #b6b6b6;
+  margin-top: 3px;
+}
+
+/* Ensure iOS has proper spacing at the bottom */
+@supports (-webkit-touch-callout: none) {
+  .safari-activity-card:last-child {
+    margin-bottom: 80px;
+  }
+} 

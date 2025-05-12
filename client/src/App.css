@@ -1,0 +1,756 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  padding-bottom: env(safe-area-inset-bottom, 20px);
+  background: linear-gradient(135deg, #0a0f1a 0%, #1a2233 100%);
+  font-family: 'VT323', 'Press Start 2P', 'Share Tech Mono', monospace;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  border: none;
+  outline: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 15px;
+  padding: 0 16px;
+  padding-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    padding: 0 8px;
+    padding-top: 16px;
+  }
+}
+
+.app-title {
+  color: #ffe600;
+  font-family: 'Press Start 2P', 'VT323', monospace;
+  font-size: 2.8rem;
+  margin-bottom: 32px;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 0 #ffe600, 0 2px 4px #f80, 0 0 12px #ffe600;
+  padding: 0 10px;
+}
+
+@media (max-width: 768px) {
+  .app-title {
+    font-size: 2.4rem;
+    margin-bottom: 24px;
+    text-shadow: 0 1px 0 #ffe600, 0 1px 2px #f80, 0 0 6px #ffe600;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-title {
+    font-size: 2rem;
+  }
+}
+
+.scoreboard-container {
+  width: 100%;
+  padding: 0 20px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+  .scoreboard-container {
+    padding: 0 10px;
+  }
+}
+
+.scoreboard-title {
+  color: #00eaff;
+  font-family: 'Press Start 2P', 'VT323', monospace;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  text-align: center;
+  margin-bottom: 0;
+  text-shadow: 0 2px 8px #00eaff, 0 0 2px #fff;
+  padding: 0 10px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@media (max-width: 768px) {
+  .scoreboard-title {
+    font-size: 1rem;
+    margin-bottom: 14px;
+  }
+}
+
+.daily-score-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'VT323', 'Share Tech Mono', monospace;
+  font-size: 2.1rem;
+  color: #b6ff00;
+  background: #232d3e;
+  border-radius: 12px;
+  padding: 8px 20px;
+  margin: 0 auto 10px auto;
+  max-width: 420px;
+  box-shadow: 0 2px 12px rgba(17,17,17,0.6), 0 0 8px #b6ff00;
+  border: 2px solid #00eaff;
+  letter-spacing: 2px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .daily-score-line {
+    font-size: 1.8rem;
+    padding: 6px 16px;
+    letter-spacing: 1px;
+  }
+}
+
+@media (max-width: 480px) {
+  .daily-score-line {
+    font-size: 1.5rem;
+    padding: 4px 12px;
+  }
+}
+
+.score-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.score-value {
+  padding-left: 12px;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+}
+
+.buttons-row {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 18px;
+  margin-bottom: 24px;
+  padding: 0 10px;
+}
+
+@media (max-width: 768px) {
+  .buttons-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+}
+
+.info-button, .reset-button {
+  border: 3px solid;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.4rem;
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: bold;
+  transition: background 0.3s, color 0.3s;
+  min-width: 240px;
+  height: 56px;
+}
+
+@media (max-width: 768px) {
+  .info-button, .reset-button {
+    width: 80%;
+    min-width: auto;
+    max-width: 300px;
+    font-size: 1.2rem;
+  }
+}
+
+.info-button {
+  background: #00eaff;
+  color: #1a2233;
+  border-color: #00eaff;
+  box-shadow: 0 0 8px #00eaff, 0 0 2px #fff;
+}
+
+.info-button:hover {
+  background: #1a2233;
+  color: #00eaff;
+}
+
+.reset-button {
+  background: #ffe600;
+  color: #1a2233;
+  border-color: #ffe600;
+  box-shadow: 0 0 8px #ffe600, 0 0 2px #fff;
+}
+
+.reset-button:hover {
+  background: #1a2233;
+  color: #ffe600;
+}
+
+.info-modal-overlay {
+  z-index: 2000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.info-modal-content {
+  background: white;
+  border-radius: 15px;
+  max-width: 500px;
+  width: 90%;
+  padding: 30px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2001;
+  box-shadow: 0 8px 32px rgba(44,62,80,0.18);
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.info-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #7f8c8d;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.info-modal-close:hover {
+  color: #2c3e50;
+}
+
+.info-modal-header {
+  color: #2c3e50;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.info-modal-body {
+  color: #34495e;
+  margin-bottom: 20px;
+  line-height: 1.6;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1rem;
+  font-weight: normal;
+}
+
+/* iOS Safari fixes */
+@supports (-webkit-touch-callout: none) {
+  .app-container {
+    position: fixed;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  .activity-grid {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 80px !important;
+    overscroll-behavior-y: none;
+  }
+  
+  .activity-wrapper:last-child,
+  .safari-container > *:last-child,
+  .ios-card:last-child {
+    margin-bottom: 80px !important;
+  }
+  
+  footer {
+    position: relative !important;
+    z-index: 20 !important;
+    border-top: 2px solid rgba(255, 255, 255, 0.2) !important;
+    margin-top: 5px !important;
+  }
+}
+
+/* Activity container layout */
+.activity-container {
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.activity-wrapper {
+  width: 100%;
+  padding: 0 10px 20px 10px;
+  flex: 0 0 calc(100% - 20px);
+  max-width: calc(100% - 20px);
+  box-sizing: border-box;
+}
+
+@media screen and (min-width: 768px) {
+  .activity-wrapper {
+    width: calc(50% - 20px);
+    flex: 0 0 calc(50% - 20px);
+    max-width: calc(50% - 20px);
+  }
+}
+
+/* Firefox-specific fixes */
+@-moz-document url-prefix() {
+  .activity-wrapper {
+    flex: 0 0 calc(100% - 20px);
+    max-width: calc(100% - 20px);
+  }
+  
+  @media screen and (min-width: 768px) {
+    .activity-wrapper {
+      flex: 0 0 calc(50% - 20px) !important;
+      max-width: calc(50% - 20px) !important;
+      width: calc(50% - 20px) !important;
+    }
+
+    .activity-row {
+      justify-content: space-between !important;
+      display: flex !important;
+      flex-wrap: wrap !important;
+    }
+  }
+  
+  /* Force Firefox to use 2 columns regardless of screen width above 768px */
+  @media screen and (min-width: 768px) {
+    .activity-container {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .activity-row {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    
+    .activity-wrapper {
+      width: calc(50% - 20px) !important;
+      flex: 0 0 calc(50% - 20px) !important;
+      max-width: calc(50% - 20px) !important;
+    }
+  }
+}
+
+/* Safari specific container styling */
+.safari-container {
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* Safari cards in multiple columns */
+.safari-container > * {
+  width: calc(100% - 20px);
+  margin: 0 10px 20px 10px;
+  flex: 0 0 calc(100% - 20px);
+}
+
+@media screen and (min-width: 768px) {
+  .safari-container > * {
+    width: calc(50% - 20px);
+    flex: 0 0 calc(50% - 20px);
+  }
+}
+
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px),
+       screen and (min-width: 768px) and (max-width: 1024px) {
+  .safari-container > * {
+    width: calc(33.33% - 20px);
+    flex: 0 0 calc(33.33% - 20px);
+    max-width: calc(33.33% - 20px);
+  }
+}
+
+/* Additional iOS-specific classes */
+.ios-card {
+  width: calc(100% - 20px);
+  margin: 0 10px 20px 10px;
+  flex: 0 0 calc(100% - 20px);
+}
+
+@media screen and (min-width: 768px) {
+  .ios-card {
+    width: calc(50% - 20px);
+    flex: 0 0 calc(50% - 20px);
+  }
+}
+
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px),
+       screen and (min-width: 768px) and (max-width: 1024px) {
+  .ios-card {
+    width: calc(33.33% - 20px);
+    flex: 0 0 calc(33.33% - 20px);
+    max-width: calc(33.33% - 20px);
+  }
+}
+
+/* More specific iPad rules using device detection */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  .ios-card, .safari-container > * {
+    width: calc(33.33% - 20px) !important;
+    flex: 0 0 calc(33.33% - 20px) !important;
+    max-width: calc(33.33% - 20px) !important;
+  }
+  
+  /* Force 3-column layout on iPad */
+  .ios-fallback-container > * {
+    width: calc(33.33% - 20px) !important;
+    flex: 0 0 calc(33.33% - 20px) !important;
+    max-width: calc(33.33% - 20px) !important;
+  }
+}
+
+/* Additional iPad specific selector */
+html[data-device="ipad"] .ios-card,
+html[data-device="ipad"] .safari-container > *,
+html[data-device="ipad"] .ios-fallback-container > * {
+  width: calc(33.33% - 20px) !important;
+  flex: 0 0 calc(33.33% - 20px) !important;
+  max-width: calc(33.33% - 20px) !important;
+}
+
+/* Real-time update notification */
+.update-notification {
+  position: fixed;
+  bottom: 50px;
+  right: 20px;
+  background-color: rgba(0, 234, 255, 0.95);
+  color: #1a2233;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1rem;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 234, 255, 0.6);
+  z-index: 1000;
+  animation: pulseAndFade 4s ease-in-out;
+  pointer-events: none;
+  border: 2px solid #00eaff;
+  text-shadow: 0 0 2px #fff;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+/* iOS specific notification styling */
+@supports (-webkit-touch-callout: none) {
+  .update-notification {
+    bottom: 60px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    max-width: 85%;
+    padding: 14px 20px;
+    background-color: rgba(0, 234, 255, 0.98);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 234, 255, 0.7);
+    border-width: 3px;
+    font-size: 1.1rem;
+    animation: iOSPulseAndFade 4s ease-in-out;
+  }
+}
+
+@keyframes pulseAndFade {
+  0% { opacity: 0; transform: translateY(20px) scale(0.8); }
+  10% { opacity: 1; transform: translateY(0) scale(1.05); }
+  20% { transform: translateY(0) scale(1); }
+  80% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(20px); }
+}
+
+/* Specialized animation for iOS devices */
+@keyframes iOSPulseAndFade {
+  0% { opacity: 0; transform: translateX(-50%) translateY(20px) scale(0.8); }
+  10% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1.05); }
+  20% { transform: translateX(-50%) translateY(0) scale(1); }
+  80% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+}
+
+/* iOS notification animation */
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+  10% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+  20% { transform: translate(-50%, -50%) scale(1); }
+  80% { opacity: 1; transform: translate(-50%, -50%); }
+  100% { opacity: 0; transform: translate(-50%, -50%); }
+}
+
+/* iOS notification animation for top position */
+@keyframes fadeInOutTop {
+  0% { opacity: 0; transform: translate3d(-50%, -20px, 0); }
+  10% { opacity: 1; transform: translate3d(-50%, 5px, 0); }
+  20% { transform: translate3d(-50%, 0, 0); }
+  80% { opacity: 1; transform: translate3d(-50%, 0, 0); }
+  100% { opacity: 0; transform: translate3d(-50%, -20px, 0); }
+}
+
+/* Spinner animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Animation for completed activities */
+@keyframes completedPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.activity-wrapper .grid-item[data-completed="true"],
+.safari-card[data-completed="true"],
+.ios-card[data-completed="true"] {
+  animation: completedPulse 0.5s ease-in-out;
+}
+
+/* Animation for state change */
+@keyframes stateChangePulse {
+  0% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.state-changed {
+  animation: stateChangePulse 0.5s ease-in-out !important;
+}
+
+.scoreboard-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 18px;
+  position: relative;
+}
+
+.icon-button {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  border: 2px solid;
+  padding: 0;
+  margin: 0 15px;
+  line-height: 1;
+  color: #1a2233;
+  position: relative;
+  top: -2px;
+}
+
+.info-icon {
+  background: #00eaff;
+  border-color: #00eaff;
+  box-shadow: 0 0 8px #00eaff, 0 0 2px #fff;
+  position: relative;
+}
+
+.info-icon:hover {
+  background: #1a2233;
+  color: #00eaff;
+  transform: scale(1.1);
+}
+
+/* Add tooltip for info icon */
+.info-icon::after {
+  content: "What is Level Up?";
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 234, 255, 0.9);
+  color: #1a2233;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: normal;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.info-icon:hover::after {
+  opacity: 1;
+  visibility: visible;
+  top: -35px;
+}
+
+.reset-icon {
+  background: #ffe600;
+  border-color: #ffe600;
+  box-shadow: 0 0 8px #ffe600, 0 0 2px #fff;
+  position: relative;
+}
+
+.reset-icon:hover {
+  background: #1a2233;
+  color: #ffe600;
+  transform: scale(1.1);
+}
+
+/* Add tooltip for reset icon */
+.reset-icon::after {
+  content: "Reset for New Day";
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 230, 0, 0.9);
+  color: #1a2233;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: normal;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.reset-icon:hover::after {
+  opacity: 1;
+  visibility: visible;
+  top: -35px;
+}
+
+@media (max-width: 480px) {
+  .icon-button {
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+    margin: 0 10px;
+  }
+}
+
+/* Connection notification styling */
+.connection-notification {
+  position: fixed;
+  bottom: 15px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  background: #00eaff;
+  color: #1a2233;
+  padding: 5px;
+  margin: 0 auto;
+  max-width: 600px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  z-index: 100;
+}
+
+/* Score status colors */
+.score-status-danger {
+  color: #ff3860;
+  border-color: #ff3860;
+  box-shadow: 0 2px 12px rgba(17,17,17,0.6), 0 0 8px #ff3860;
+}
+
+.score-status-warning {
+  color: #ffe600;
+  border-color: #ffe600;
+  box-shadow: 0 2px 12px rgba(17,17,17,0.6), 0 0 8px #ffe600;
+}
+
+.score-status-success {
+  color: #22cc88;
+  border-color: #22cc88;
+  box-shadow: 0 2px 12px rgba(17,17,17,0.6), 0 0 8px #22cc88;
+}
+
+.activities-wrapper {
+  padding: 20px;
+  flex-grow: 1;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: none;
+}
+
+/* Footer styling */
+footer {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
+}
+
+/* Add specific iOS footer style */
+@media only screen and (max-width: 480px) {
+  footer {
+    padding-bottom: 100px !important;
+  }
+}
+
+/* Connection status indicator styling */
+.connection-status-indicator {
+  position: fixed;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 150, 255, 0.8);
+  color: white;
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  max-width: 90%;
+  text-align: center;
+} 

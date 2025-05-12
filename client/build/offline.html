@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level Up! (Offline Version)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Share Tech Mono', monospace;
+      background-color: #0a0f1a;
+      color: #fff;
+      padding: 20px;
+      min-height: 100vh;
+      position: relative;
+    }
+    
+    .app-container {
+      max-width: 100%;
+      margin: 0 auto;
+    }
+    
+    .app-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .app-title {
+      color: #ffe600;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 2.8rem;
+      margin-bottom: 32px;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 0 #ffe600, 0 2px 4px #f80, 0 0 12px #ffe600;
+      padding: 0 10px;
+    }
+    
+    .scoreboard-title {
+      color: #00eaff;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+      text-align: center;
+      margin-bottom: 18px;
+      text-shadow: 0 2px 8px #00eaff, 0 0 2px #fff;
+      padding: 0 10px;
+    }
+    
+    .scoreboard-container {
+      width: 100%;
+      padding: 0 20px;
+      margin: 0 auto;
+    }
+    
+    .daily-score-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'VT323', monospace;
+      font-size: 2.1rem;
+      color: #b6ff00;
+      background: #232d3e;
+      border-radius: 12px;
+      padding: 8px 20px;
+      margin: 0 auto 18px auto;
+      max-width: 420px;
+      box-shadow: 0 2px 12px rgba(17,17,17,0.6), 0 0 8px #b6ff00;
+      border: 2px solid #00eaff;
+      letter-spacing: 2px;
+      width: 100%;
+    }
+    
+    .score-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .score-value {
+      padding-left: 12px;
+    }
+    
+    .buttons-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-bottom: 24px;
+      padding: 0 10px;
+    }
+    
+    .info-button, .reset-button {
+      border: 3px solid;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.4rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-weight: bold;
+      transition: background 0.3s, color 0.3s;
+      min-width: 240px;
+      height: 56px;
+      margin: 0 10px;
+    }
+    
+    .info-button {
+      background: #00eaff;
+      color: #1a2233;
+      border-color: #00eaff;
+      box-shadow: 0 0 8px #00eaff, 0 0 2px #fff;
+    }
+    
+    .info-button:hover {
+      background: #1a2233;
+      color: #00eaff;
+    }
+    
+    .reset-button {
+      background: #ffe600;
+      color: #1a2233;
+      border-color: #ffe600;
+      box-shadow: 0 0 8px #ffe600, 0 0 2px #fff;
+    }
+    
+    .reset-button:hover {
+      background: #1a2233;
+      color: #ffe600;
+    }
+    
+    .offline-notice {
+      text-align: center;
+      background: #2ed573;
+      color: #1a2233;
+      padding: 5px;
+      margin: 0 auto 15px auto;
+      max-width: 600px;
+      border-radius: 5px;
+      font-size: 0.8rem;
+    }
+    
+    .activity-container {
+      width: 100%;
+      max-width: 1024px;
+      margin: 0 auto;
+      padding: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    
+    .activity-card {
+      background-color: #1a2233;
+      border: 2px solid #00eaff;
+      border-radius: 10px;
+      padding: 15px;
+      cursor: pointer;
+      color: #e6e6e6;
+      margin-bottom: 20px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    
+    /* Responsive grid for tablets and desktops */
+    @media screen and (min-width: 768px) {
+      .activity-card {
+        width: calc(50% - 15px);
+      }
+    }
+    
+    /* iPad-specific layouts */
+    @media screen and (min-width: 768px) and (max-width: 1024px) {
+      .activity-card {
+        width: calc(33.33% - 15px);
+      }
+    }
+    
+    /* iPad specific detection */
+    @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+      .activity-card {
+        width: calc(33.33% - 15px);
+      }
+    }
+    
+    /* Special class for iPad specific overrides */
+    body.ipad-device .activity-card {
+      width: calc(33.33% - 15px);
+      box-sizing: border-box;
+    }
+    
+    .activity-card.completed {
+      background-color: #1a3322;
+      border-color: #2ed573;
+    }
+    
+    .card-title {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+    
+    .card-points {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #00eaff;
+    }
+    
+    .card-points.completed {
+      color: #2ed573;
+    }
+    
+    .card-status {
+      font-size: 1rem;
+      color: #b6b6b6;
+      margin-top: 7px;
+    }
+    
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    
+    .modal-content {
+      background-color: white;
+      padding: 30px;
+      border-radius: 15px;
+      max-width: 500px;
+      width: 90%;
+      position: relative;
+      font-family: 'Share Tech Mono', monospace;
+    }
+    
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #7f8c8d;
+      z-index: 10;
+    }
+    
+    .modal-title {
+      color: #2c3e50;
+      margin-bottom: 20px;
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+    
+    .modal-description {
+      color: #34495e;
+      margin-bottom: 30px;
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+    
+    .modal-points {
+      color: #3498db;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    
+    .button-group {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    
+    .retro-button {
+      padding: 10px 24px;
+      border: 3px solid;
+      border-radius: 8px;
+      background: #1a2233;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1.4rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      cursor: pointer;
+      margin: 0 8px;
+      margin-top: 10px;
+      transition: background 0.3s, color 0.3s, border-color 0.3s;
+    }
+    
+    .retro-button.complete {
+      color: #2ed573;
+      border-color: #2ed573;
+      box-shadow: 0 0 8px #2ed573, 0 0 2px #fff;
+    }
+    
+    .retro-button.incomplete {
+      color: #ff3860;
+      border-color: #ff3860;
+      box-shadow: 0 0 8px #ff3860, 0 0 2px #fff;
+    }
+    
+    .timestamp {
+      color: #7f8c8d;
+      font-size: 1rem;
+      min-height: 1.2em;
+      margin-top: 10px;
+      font-style: italic;
+      text-align: center;
+    }
+    
+    .info-modal-content {
+      background: #fff;
+      border-radius: 12px;
+      max-width: 600px;
+      width: 90%;
+      padding: 32px 28px;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2001;
+      box-shadow: 0 8px 32px rgba(44,62,80,0.18);
+    }
+    
+    .info-modal-close {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 1.7rem;
+      color: #888;
+      cursor: pointer;
+    }
+    
+    .info-modal-header {
+      margin-top: 0;
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #232d3e;
+    }
+    
+    .info-modal-body {
+      font-size: 1rem;
+      color: #232d3e;
+      line-height: 1.7;
+    }
+    
+    /* Media queries for responsive design */
+    @media (max-width: 768px) {
+      .app-title {
+        font-size: 2.4rem;
+      }
+      
+      .buttons-row {
+        flex-direction: column;
+      }
+      
+      .info-button, .reset-button {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .app-title {
+        font-size: 2rem;
+      }
+      
+      .daily-score-line {
+        font-size: 1.8rem;
+      }
+    }
+    
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <h1 class="app-title">Level Up!</h1>
+      <div class="scoreboard-title">DAILY SCOREBOARD</div>
+      <div class="scoreboard-container">
+        <div class="daily-score-line">
+          <span class="score-text">calstreamrr</span>
+          <span class="score-value" id="total-points">00</span>
+        </div>
+      </div>
+    </header>
+    
+    <div class="buttons-row">
+      <button class="info-button" id="info-button">
+        What is Level Up?
+      </button>
+      <button class="reset-button" id="reset-button">
+        Reset for New Day
+      </button>
+    </div>
+    
+    <div class="offline-notice">
+      Running in offline mode with example activities
+      <br>
+      <small>(Note: Real-time updates between devices are only available in online mode)</small>
+    </div>
+    
+    <div class="activity-container" id="activity-container">
+      <!-- Activities will be inserted here by JavaScript -->
+    </div>
+    
+    <!-- Activity Modal -->
+    <div class="modal-overlay hidden" id="activity-modal">
+      <div class="modal-content">
+        <button class="close-button" id="close-modal">&times;</button>
+        <h2 class="modal-title" id="modal-title"></h2>
+        <p class="modal-description" id="modal-description"></p>
+        <div class="modal-points" id="modal-points"></div>
+        <div class="button-group">
+          <button class="retro-button" id="toggle-button"></button>
+        </div>
+        <div class="timestamp" id="timestamp"></div>
+      </div>
+    </div>
+    
+    <!-- Info Modal -->
+    <div class="modal-overlay hidden" id="info-modal-overlay">
+      <div class="info-modal-content">
+        <button class="info-modal-close" id="info-modal-close">&times;</button>
+        <h2 class="info-modal-header">What is Level Up?</h2>
+        <div class="info-modal-body">
+          You can earn up to <b>60 points (or minutes) of screen time</b> each weekday (Monday–Friday) by doing awesome work during homeschool! Each task earns points. Every point = 1 minute of screen time.<br><br>
+          🧠 <b>BUT</b>—you can only use screen time after your math and spelling are done.<br><br>
+          Carrying points over to the next day is only allowed if a parent says it's okay.<br><br>
+          💡 You can mix and match these to earn up to 60 points per day.<br><br>
+          ✔️ Make smart choices.<br>
+          💬 Ask if you want to carry points over.<br>
+          🎉 Have fun learning and earning!
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Sample activities data
+    const activities = [
+      {
+        id: 1,
+        name: "Reading Assignment",
+        points: 10,
+        completed: false,
+        description: "Complete your daily reading assignment"
+      },
+      {
+        id: 2,
+        name: "Math Worksheet",
+        points: 15,
+        completed: false,
+        description: "Finish today's math problems"
+      },
+      {
+        id: 3,
+        name: "Science Experiment",
+        points: 20,
+        completed: false,
+        description: "Conduct the assigned science experiment"
+      },
+      {
+        id: 4,
+        name: "Writing Exercise",
+        points: 10,
+        completed: false,
+        description: "Complete your writing assignment"
+      },
+      {
+        id: 5,
+        name: "Art Project",
+        points: 5,
+        completed: false,
+        description: "Work on your art project"
+      }
+    ];
+    
+    // Elements
+    const activityContainer = document.getElementById('activity-container');
+    const totalPointsElement = document.getElementById('total-points');
+    const activityModal = document.getElementById('activity-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDescription = document.getElementById('modal-description');
+    const modalPoints = document.getElementById('modal-points');
+    const toggleButton = document.getElementById('toggle-button');
+    const timestamp = document.getElementById('timestamp');
+    const closeModal = document.getElementById('close-modal');
+    const infoButton = document.getElementById('info-button');
+    const infoModal = document.getElementById('info-modal-overlay');
+    const closeInfoModal = document.getElementById('info-modal-close');
+    const resetButton = document.getElementById('reset-button');
+    
+    // Current selected activity
+    let selectedActivity = null;
+    
+    // Format date
+    function formatDate(dateString) {
+      if (!dateString) return '';
+      const date = new Date(dateString);
+      return date.toLocaleString();
+    }
+    
+    // Calculate total points
+    function calculateTotalPoints() {
+      const total = activities
+        .filter(activity => activity.completed)
+        .reduce((sum, activity) => sum + activity.points, 0);
+      totalPointsElement.textContent = String(total).padStart(2, '0');
+    }
+    
+    // Render activities
+    function renderActivities() {
+      activityContainer.innerHTML = '';
+      
+      activities.forEach(activity => {
+        const card = document.createElement('div');
+        card.className = `activity-card${activity.completed ? ' completed' : ''}`;
+        card.dataset.id = activity.id;
+        
+        card.innerHTML = `
+          <h3 class="card-title">${activity.name}</h3>
+          <div class="card-points${activity.completed ? ' completed' : ''}">${activity.points} points</div>
+          <div class="card-status">${activity.completed ? 'Completed!' : 'Click to mark as complete'}</div>
+        `;
+        
+        card.addEventListener('click', () => openActivityModal(activity));
+        
+        activityContainer.appendChild(card);
+      });
+      
+      // Ensure proper iPad detection
+      const ua = navigator.userAgent;
+      const isIPad = !!ua.match(/iPad/i) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      
+      if (isIPad) {
+        console.log("iPad detected, optimizing layout");
+        document.body.classList.add('ipad-device');
+      }
+    }
+    
+    // Open activity modal
+    function openActivityModal(activity) {
+      selectedActivity = activity;
+      
+      modalTitle.textContent = activity.name;
+      modalDescription.textContent = activity.description;
+      modalPoints.textContent = `${activity.points} points`;
+      
+      toggleButton.className = `retro-button ${!activity.completed ? 'complete' : 'incomplete'}`;
+      toggleButton.textContent = activity.completed ? 'Mark as Incomplete' : 'Mark as Complete';
+      
+      timestamp.textContent = activity.completedAt && activity.completed 
+        ? `Completed on: ${formatDate(activity.completedAt)}` 
+        : '';
+      
+      activityModal.classList.remove('hidden');
+    }
+    
+    // Close activity modal
+    function closeActivityModal() {
+      activityModal.classList.add('hidden');
+      selectedActivity = null;
+    }
+    
+    // Toggle activity completion
+    function toggleActivityCompletion() {
+      if (!selectedActivity) return;
+      
+      const activity = activities.find(a => a.id === selectedActivity.id);
+      if (!activity) return;
+      
+      activity.completed = !activity.completed;
+      
+      if (activity.completed) {
+        activity.completedAt = new Date().toISOString();
+      } else {
+        activity.completedAt = null;
+      }
+      
+      renderActivities();
+      calculateTotalPoints();
+      closeActivityModal();
+    }
+    
+    // Reset all activities
+    function resetActivities() {
+      activities.forEach(activity => {
+        activity.completed = false;
+        activity.completedAt = null;
+      });
+      
+      renderActivities();
+      calculateTotalPoints();
+    }
+    
+    // Event listeners
+    closeModal.addEventListener('click', closeActivityModal);
+    toggleButton.addEventListener('click', toggleActivityCompletion);
+    infoButton.addEventListener('click', () => infoModal.classList.remove('hidden'));
+    closeInfoModal.addEventListener('click', () => infoModal.classList.add('hidden'));
+    resetButton.addEventListener('click', resetActivities);
+    
+    // Initialize
+    renderActivities();
+    calculateTotalPoints();
+  </script>
+</body>
+</html> 

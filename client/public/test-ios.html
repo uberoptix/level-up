@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iOS Test Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Share Tech Mono', monospace;
+      background-color: #0a0f1a;
+      color: #fff;
+      padding: 20px;
+    }
+    
+    h1 {
+      text-align: center;
+      margin: 20px 0;
+      color: #ffe600;
+    }
+    
+    .test-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .card {
+      background-color: #1a2233;
+      border: 2px solid #00eaff;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+      color: #e6e6e6;
+    }
+    
+    .card-completed {
+      background-color: #1a3322;
+      border: 2px solid #2ed573;
+    }
+    
+    .card-title {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+    
+    .card-points {
+      color: #00eaff;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    
+    .card-completed .card-points {
+      color: #2ed573;
+    }
+    
+    .card-status {
+      color: #b6b6b6;
+      font-size: 1rem;
+      margin-top: 7px;
+    }
+  </style>
+</head>
+<body>
+  <h1>iOS Test Page</h1>
+  
+  <div class="test-container">
+    <div class="card">
+      <h3 class="card-title">Reading Assignment</h3>
+      <div class="card-points">10 points</div>
+      <div class="card-status">Click to mark as complete</div>
+    </div>
+    
+    <div class="card card-completed">
+      <h3 class="card-title">Math Worksheet</h3>
+      <div class="card-points">15 points</div>
+      <div class="card-status">Completed!</div>
+    </div>
+    
+    <div class="card">
+      <h3 class="card-title">Science Experiment</h3>
+      <div class="card-points">20 points</div>
+      <div class="card-status">Click to mark as complete</div>
+    </div>
+  </div>
+  
+  <script>
+    // Simple script to toggle completion state
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('click', function() {
+        this.classList.toggle('card-completed');
+        const points = this.querySelector('.card-points');
+        const status = this.querySelector('.card-status');
+        
+        if (this.classList.contains('card-completed')) {
+          points.style.color = '#2ed573';
+          status.textContent = 'Completed!';
+        } else {
+          points.style.color = '#00eaff';
+          status.textContent = 'Click to mark as complete';
+        }
+      });
+    });
+  </script>
+</body>
+</html> 

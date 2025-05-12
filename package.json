@@ -1,0 +1,17 @@
+{
+  "name": "level-up",
+  "version": "1.0.0",
+  "description": "Homeschool Activity Tracker Web App",
+  "main": "index.js",
+  "scripts": {
+    "server": "cd server && npm start",
+    "client": "cd client && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "cd server && npm start",
+    "build": "cd client && npm run build",
+    "deploy": "sh deploy.sh"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+} 
