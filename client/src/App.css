@@ -265,6 +265,46 @@
   font-weight: normal;
 }
 
+/* Modal buttons styling */
+.modal-button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.modal-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  min-width: 120px;
+}
+
+.modal-button.cancel {
+  background: #666;
+  color: #fff;
+  margin-right: 10px;
+}
+
+.modal-button.cancel:hover {
+  background: #555;
+}
+
+.modal-button.confirm {
+  background: #ffe600;
+  color: #1a2233;
+  font-weight: bold;
+  box-shadow: 0 0 5px rgba(255, 230, 0, 0.5);
+}
+
+.modal-button.confirm:hover {
+  background: #ffd500;
+  transform: scale(1.05);
+}
+
 /* iOS Safari fixes */
 @supports (-webkit-touch-callout: none) {
   .app-container {

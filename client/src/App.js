@@ -74,6 +74,8 @@ function App() {
   // Keep track of real connected clients count to prevent cycling
   const stableConnectedClientsRef = useRef(1);
   const lastConnectionUpdateTime = useRef(Date.now());
+  // Add state for reset confirmation modal
+  const [showResetConfirmation, setShowResetConfirmation] = useState(false);
 
   // iOS-specific notification function
   const showIOSNotification = useCallback((message) => {
@@ -540,7 +542,15 @@ function App() {
     }
   };
 
-  const handleReset = async () => {
+  const handleReset = () => {
+    // Show confirmation dialog before resetting
+    setShowResetConfirmation(true);
+  };
+
+  const confirmReset = async () => {
+    // Hide confirmation dialog
+    setShowResetConfirmation(false);
+
     if (usingStaticData) {
       // We're in offline mode due to connection issue
       // Still update the UI locally, but warn the user
@@ -887,6 +897,34 @@ function App() {
               ✔️ Make smart choices.<br />
               💬 Ask if you want to carry points over.<br />
               🎉 Have fun learning and earning!
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Reset confirmation modal */}
+      {showResetConfirmation && (
+        <>
+          <div className="info-modal-overlay" onClick={() => setShowResetConfirmation(false)}></div>
+          <div className="info-modal-content">
+            <button className="info-modal-close" onClick={() => setShowResetConfirmation(false)}>&times;</button>
+            <h2 className="info-modal-header">Reset for New Day?</h2>
+            <div className="info-modal-body">
+              Are you sure you want to reset all activities? This will mark all activities as incomplete and reset any counters to zero.
+            </div>
+            <div className="modal-button-group">
+              <button 
+                onClick={() => setShowResetConfirmation(false)} 
+                className="modal-button cancel"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={confirmReset} 
+                className="modal-button confirm"
+              >
+                Yes, Reset All
+              </button>
             </div>
           </div>
         </>

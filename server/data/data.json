@@ -20,7 +20,7 @@
       "id": 3,
       "name": "Aesop's Fables",
       "points": 10,
-      "description": "Read and discuss one Aesop's fable",
+      "description": "Read one Aesop’s Fable and then complete the reflection page. First, summarize the story in your own words. Then, answer the questions about the moral and how it applies to your life today.",
       "completed": false,
       "completedAt": null
     },
@@ -36,7 +36,7 @@
       "id": 6,
       "name": "Extra Math Page",
       "points": 5,
-      "description": "Complete an additional math page. If you don't have one available, ask a parent to generate a new one.",
+      "description": "Complete an additional math page. If you don't have one available, ask a parent to generate a new one. You can complete this multiple times per day for additional points.",
       "completed": false,
       "completedAt": null,
       "count": 0,
@@ -46,7 +46,7 @@
       "id": 7,
       "name": "Extra Spelling Page",
       "points": 5,
-      "description": "Complete an additional spelling page. If you don't have one available, ask a parent to generate a new one.",
+      "description": "Complete an additional spelling page. If you don't have one available, ask a parent to generate a new one. You can complete this multiple times per day for additional points.",
       "completed": false,
       "completedAt": null,
       "count": 0,
@@ -56,7 +56,7 @@
       "id": 9,
       "name": "Logic Workbook",
       "points": 5,
-      "description": "Complete one activity from your logic book. You can complete this multiple times per day for additional points.",
+      "description": "Complete 1 activity from your logic workbook. You can complete this multiple times per day for additional points.",
       "completed": false,
       "completedAt": null,
       "count": 0,
@@ -64,9 +64,9 @@
     },
     {
       "id": 1,
-      "name": "Studycat Spanish",
+      "name": "Spanish Practice",
       "points": 5,
-      "description": "Complete Spanish lessons on Studycat",
+      "description": "Complete 1 lesson in Studycat on the iPad, or some equivalent activity approved by a parent.",
       "completed": true,
       "completedAt": "2025-05-12T21:16:00.978Z"
     },
@@ -74,7 +74,7 @@
       "id": 2,
       "name": "Typing Practice",
       "points": 5,
-      "description": "Practice typing for 15 minutes",
+      "description": "Complete 1 lesson in Typing Land on the iPad, or some equivalent activity approved by a parent.",
       "completed": false,
       "completedAt": null
     }
