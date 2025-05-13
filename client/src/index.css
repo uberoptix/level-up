@@ -7,6 +7,7 @@
 :root {
   background-color: #0a0f1a;
   font-family: 'Share Tech Mono', monospace;
+  overscroll-behavior-y: none;
 }
 
 html, body {
@@ -15,17 +16,24 @@ html, body {
   background-color: #0a0f1a;
   font-family: 'Share Tech Mono', monospace;
   overflow-x: hidden;
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 #root {
   position: relative;
   display: block;
   min-height: 100vh;
+  overscroll-behavior-y: none;
 }
 
 @supports (-webkit-touch-callout: none) {
   html, body, #root {
     min-height: -webkit-fill-available;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
 

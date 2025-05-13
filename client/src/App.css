@@ -13,11 +13,7 @@
   overflow-x: hidden;
   border: none;
   outline: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  position: relative;
   overscroll-behavior: none;
   -webkit-overflow-scrolling: touch;
 }
@@ -308,16 +304,16 @@
 /* iOS Safari fixes */
 @supports (-webkit-touch-callout: none) {
   .app-container {
-    position: fixed;
-    height: 100%;
-    overflow: hidden;
+    position: relative;
+    min-height: -webkit-fill-available;
+    overflow-y: auto;
+    overscroll-behavior-y: none;
+    -webkit-overflow-scrolling: touch;
   }
   
   .activity-grid {
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    overflow-y: visible;
     padding-bottom: 80px !important;
-    overscroll-behavior-y: none;
   }
   
   .activity-wrapper:last-child,
