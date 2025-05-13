@@ -39,7 +39,14 @@ app.use(cors({
 }));
 app.use(bodyParser.json());
 
-const DATA_FILE = path.join(__dirname, 'data', 'data.json');
+const DATA_DIR = path.join(__dirname, 'data');
+const DATA_FILE = path.join(DATA_DIR, 'data.json');
+
+// Ensure data directory exists
+if (!fs.existsSync(DATA_DIR)) {
+  console.log(`Creating data directory: ${DATA_DIR}`);
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+}
 
 // Initialize data file if it doesn't exist
 if (!fs.existsSync(DATA_FILE)) {

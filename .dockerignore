@@ -11,6 +11,9 @@ yarn-error.log
 .env.test.local
 .env.production.local
 
+# Data files - exclude data directory to prevent conflicts with volume mount
+server/data
+
 # Editor files
 .vscode
 .idea

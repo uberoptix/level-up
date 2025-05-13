@@ -10,7 +10,7 @@ services:
       - PORT=5001
       - CORS_ORIGIN=*
     volumes:
-      - ./server/data/data.json:/app/server/data/data.json
+      - ./server/data:/app/server/data
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5001/api/health"]
@@ -19,8 +19,4 @@ services:
       retries: 3
       start_period: 20s
     command: >
-      sh -c "mkdir -p /app/server/data && ls -la /app/client/build && npm start" 
-
-volumes:
-  level-up-data:
-    driver: local 
+      sh -c "mkdir -p /app/server/data && ls -la /app/server/data && npm start" 
