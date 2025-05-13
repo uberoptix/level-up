@@ -877,7 +877,7 @@ footer {
   transform: translateX(-50%);
   background: rgba(0, 150, 255, 0.95);
   color: white;
-  padding: 10px 20px;
+  padding: 6px 16px;
   border-radius: 20px;
   font-size: 0.9rem;
   z-index: 1000;
@@ -889,13 +889,16 @@ footer {
   font-weight: bold;
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
+  line-height: 1.2;
+  white-space: nowrap;
 }
 
 /* iOS-specific adjustments */
 @supports (-webkit-touch-callout: none) {
   .connection-status-indicator {
     bottom: calc(1rem + env(safe-area-inset-bottom, 0));
-    padding: 10px 20px;
+    padding: 6px 16px;
+    line-height: 1.2;
     background: rgba(0, 150, 255, 0.95);
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
     border: 2px solid rgba(0, 150, 255, 0.8);
