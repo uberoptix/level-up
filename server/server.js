@@ -42,6 +42,9 @@ app.use(bodyParser.json());
 const DATA_DIR = path.join(__dirname, 'data');
 const DATA_FILE = path.join(DATA_DIR, 'data.json');
 
+console.log(`Data directory: ${DATA_DIR}`);
+console.log(`Data file path: ${DATA_FILE}`);
+
 // Ensure data directory exists
 if (!fs.existsSync(DATA_DIR)) {
   console.log(`Creating data directory: ${DATA_DIR}`);
@@ -50,6 +53,7 @@ if (!fs.existsSync(DATA_DIR)) {
 
 // Initialize data file if it doesn't exist
 if (!fs.existsSync(DATA_FILE)) {
+  console.log(`Data file not found, creating default data file: ${DATA_FILE}`);
   const initialData = {
     activities: [
       { id: 1, name: "Studycat Spanish", points: 5, description: "Complete Spanish lessons on Studycat", completed: false, completedAt: null },
