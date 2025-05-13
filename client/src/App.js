@@ -252,13 +252,13 @@ function App() {
       // Clear static data mode when socket successfully connects
       if (usingStaticData) {
         setUsingStaticData(false);
-        displayNotification('Connected to server - changes will now sync');
-      } else if (isIOS) {
-        // Show notification for iOS in the same top position
+        if (!isIOS) {
+          displayNotification('Connected to server - changes will now sync');
+        }
+      }
+      // Show notification for iOS in the same top position only
+      if (isIOS) {
         showIOSNotification('Connected to server - changes will update in real-time');
-      } else {
-        // Just log connection, don't display notification
-        console.log('Connected to real-time updates');
       }
       
       // Notify the server we need data right away
@@ -889,13 +889,30 @@ function App() {
             <button className="info-modal-close" onClick={() => setShowInfoModal(false)}>&times;</button>
             <h2 className="info-modal-header">What is Level Up?</h2>
             <div className="info-modal-body">
-              You can earn up to <b>60 points (or minutes) of screen time</b> each weekday (Monday–Friday) by doing awesome work during homeschool! Each task earns points. Every point = 1 minute of screen time.<br /><br />
-              🧠 <b>BUT</b>—you can only use screen time after your math and spelling are done.<br /><br />
-              Carrying points over to the next day is only allowed if a parent says it's okay.<br /><br />
-              💡 You can mix and match these to earn up to 60 points per day.<br /><br />
-              ✔️ Make smart choices.<br />
-              💬 Ask if you want to carry points over.<br />
-              🎉 Have fun learning and earning!
+              Level Up is a fun way to earn screen time by doing amazing work!<br/>
+              <div style={{ marginLeft: '20px', marginTop: '10px' }}>
+                🎮 You can earn up to 60 points every weekday (Mon-Fri).<br/>
+                🎯 Every task you finish = points.<br/>
+                ⏳ 1 point = 1 minute of screen time!
+              </div>
+
+              <div style={{ marginTop: '20px' }}>
+                <strong>💡 Rules to Remember</strong><br/>
+                <div style={{ marginLeft: '20px' }}>
+                  🧠 You must finish math and spelling before you use any screen time.<br/>
+                  🔁 Want to save points for tomorrow? Ask a parent first!<br/>
+                  🎲 Mix and match different tasks to earn your 60 points.
+                </div>
+              </div>
+
+              <div style={{ marginTop: '20px' }}>
+                <strong>✔️ Tips</strong><br/>
+                <div style={{ marginLeft: '20px' }}>
+                  - Make smart choices.<br/>
+                  - Ask questions if you're unsure.<br/>
+                  - Have fun learning and leveling up!
+                </div>
+              </div>
             </div>
           </div>
         </>
@@ -981,24 +998,28 @@ function App() {
         </div>
       )}
       
-      {/* Connected devices indicator - show on both iOS and non-iOS */}
+      {/* Connected devices indicator - always show when multiple devices connected */}
       {!usingStaticData && connectedClients > 1 && (
         <div className="connection-status-indicator" style={{
           position: 'fixed',
-          bottom: isIOS ? '80px' : '15px', // Move up on iOS to avoid system UI
+          bottom: isIOS ? '80px' : '15px',
           left: '50%',
           transform: 'translateX(-50%)',
           background: 'rgba(0, 150, 255, 0.95)',
           color: 'white',
-          padding: '8px 15px',
+          padding: '10px 20px',
           borderRadius: '20px',
           fontSize: '0.9rem',
-          zIndex: 100,
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+          zIndex: 1000,
+          boxShadow: '0 2px 12px rgba(0, 0, 0, 0.4)',
           maxWidth: '90%',
           textAlign: 'center',
-          display: 'block', // Show for all devices
-          border: '2px solid rgba(0, 150, 255, 0.8)'
+          display: 'block',
+          border: '2px solid rgba(0, 150, 255, 0.8)',
+          fontFamily: 'Share Tech Mono, monospace',
+          fontWeight: 'bold',
+          WebkitBackdropFilter: 'blur(5px)',
+          backdropFilter: 'blur(5px)'
         }}>
           <span role="status">{connectedClients} devices connected</span>
         </div>
