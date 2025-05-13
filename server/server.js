@@ -39,7 +39,7 @@ app.use(cors({
 }));
 app.use(bodyParser.json());
 
-const DATA_FILE = path.join(__dirname, 'data.json');
+const DATA_FILE = path.join(__dirname, 'data', 'data.json');
 
 // Initialize data file if it doesn't exist
 if (!fs.existsSync(DATA_FILE)) {

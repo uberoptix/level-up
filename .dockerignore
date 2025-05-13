@@ -11,9 +11,6 @@ yarn-error.log
 .env.test.local
 .env.production.local
 
-# Data files
-server/data.json
-
 # Editor files
 .vscode
 .idea
