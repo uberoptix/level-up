@@ -890,7 +890,7 @@ function App() {
             <h2 className="info-modal-header">What is Level Up?</h2>
             <div className="info-modal-body">
               Level Up is a fun way to earn screen time by doing amazing work!<br/>
-              <div style={{ marginLeft: '20px', marginTop: '10px' }}>
+              <div style={{ marginLeft: '0px', marginTop: '10px' }}>
                 🎮 You can earn up to 60 points every weekday (Mon-Fri).<br/>
                 🎯 Every task you finish = points.<br/>
                 ⏳ 1 point = 1 minute of screen time!
@@ -898,19 +898,19 @@ function App() {
 
               <div style={{ marginTop: '20px' }}>
                 <strong>💡 Rules to Remember</strong><br/>
-                <div style={{ marginLeft: '20px' }}>
-                  🧠 You must finish math and spelling before you use any screen time.<br/>
-                  🔁 Want to save points for tomorrow? Ask a parent first!<br/>
-                  🎲 Mix and match different tasks to earn your 60 points.
+                <div style={{ marginLeft: '24px' }}>
+                  • You must finish math and spelling before you use any screen time.<br/>
+                  • Want to save points for tomorrow? Ask a parent first!<br/>
+                  • Mix and match different tasks to earn your 60 points.
                 </div>
               </div>
 
               <div style={{ marginTop: '20px' }}>
                 <strong>✔️ Tips</strong><br/>
-                <div style={{ marginLeft: '20px' }}>
-                  - Make smart choices.<br/>
-                  - Ask questions if you're unsure.<br/>
-                  - Have fun learning and leveling up!
+                <div style={{ marginLeft: '24px' }}>
+                  • Make smart choices.<br/>
+                  • Ask questions if you're unsure.<br/>
+                  • Have fun learning and leveling up!
                 </div>
               </div>
             </div>
