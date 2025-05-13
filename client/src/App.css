@@ -414,7 +414,7 @@
 /* Safari specific container styling */
 .safari-container {
   width: 100%;
-  max-width: 1024px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 10px;
   display: flex;
@@ -427,20 +427,23 @@
   width: calc(100% - 20px);
   margin: 0 10px 20px 10px;
   flex: 0 0 calc(100% - 20px);
+  min-width: 280px;
 }
 
 /* iPad specific grid layout */
 .safari-container.ipad-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
   padding: 20px;
+  width: calc(100% - 40px);
 }
 
 .safari-container.ipad-grid > * {
   width: 100%;
   margin: 0;
   flex: none;
+  min-width: 280px;
 }
 
 /* Media queries for different screen sizes */
@@ -448,51 +451,66 @@
   .safari-container > * {
     width: calc(50% - 20px);
     flex: 0 0 calc(50% - 20px);
+    min-width: 280px;
   }
 }
 
 /* iPad specific media queries */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px),
        screen and (min-width: 768px) and (max-width: 1024px) {
+  .safari-container {
+    padding: 20px;
+    max-width: 1200px;
+  }
+  
   .safari-container > * {
     width: calc(33.33% - 20px);
     flex: 0 0 calc(33.33% - 20px);
     max-width: calc(33.33% - 20px);
+    min-width: 280px;
   }
   
   .safari-container.ipad-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    max-width: 1200px;
+    gap: 20px;
   }
 }
 
-/* Force 3-column layout on iPad */
+/* Force 3-column layout on iPad with proper widths */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
   .safari-container.ipad-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
     padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
   }
   
   .safari-container.ipad-grid > * {
     width: 100% !important;
     margin: 0 !important;
     flex: none !important;
+    min-width: 280px !important;
   }
 }
 
 /* Additional iPad specific selector */
 html[data-device="ipad"] .safari-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
   padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 html[data-device="ipad"] .safari-container > * {
   width: 100% !important;
   margin: 0 !important;
   flex: none !important;
+  min-width: 280px !important;
 }
 
 /* Ensure proper spacing at the bottom of the container */
