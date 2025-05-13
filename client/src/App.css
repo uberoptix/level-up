@@ -753,4 +753,12 @@ footer {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   max-width: 90%;
   text-align: center;
+}
+
+/* Hide connection indicator specifically for iOS devices */
+@supports (-webkit-touch-callout: none) {
+  /* iOS-specific CSS */
+  .connection-status-indicator {
+    display: none !important;
+  }
 } 

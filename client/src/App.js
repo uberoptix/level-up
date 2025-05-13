@@ -944,7 +944,7 @@ function App() {
         </div>
       )}
       
-      {/* Connected devices indicator - moved to bottom */}
+      {/* Connected devices indicator - only show on non-iOS */}
       {!usingStaticData && connectedClients > 1 && !isIOS && (
         <div className="connection-status-indicator" style={{
           position: 'fixed',
@@ -959,7 +959,8 @@ function App() {
           zIndex: 100,
           boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
           maxWidth: '90%',
-          textAlign: 'center'
+          textAlign: 'center',
+          display: isIOS ? 'none' : 'block' // Extra safeguard to hide on iOS
         }}>
           <span role="status">{connectedClients} devices connected</span>
         </div>

@@ -3,9 +3,10 @@ import '../styles/ActivityCard.css';
 
 // Safari-optimized card component
 function SafariActivityCard({ activity, onClick }) {
-  const isCompleted = activity.completed;
   const isCounter = activity.type === 'counter';
   const counterValue = activity.count || 0;
+  const hasCompletions = isCounter && counterValue > 0;
+  const isCompleted = isCounter ? hasCompletions : activity.completed;
   const totalPoints = isCounter ? activity.points * counterValue : activity.points;
   
   return (
@@ -23,7 +24,12 @@ function SafariActivityCard({ activity, onClick }) {
           {activity.name}
         </div>
         <div className="safari-card-points">
-          {totalPoints} points
+          {isCounter 
+            ? counterValue > 0 
+              ? `${totalPoints} points` 
+              : `${activity.points} points`
+            : `${totalPoints} points`
+          }
         </div>
         <div className="safari-card-status-text">
           {isCounter ? (

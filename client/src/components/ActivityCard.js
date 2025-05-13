@@ -4,6 +4,7 @@ import React from 'react';
 function ActivityCard({ activity, onClick, className }) {
   const isCounterType = activity.type === 'counter';
   const counterValue = activity.count || 0;
+  const hasCompletions = isCounterType && counterValue > 0;
   const totalPoints = isCounterType ? activity.points * counterValue : activity.points;
   
   const cardStyle = {
@@ -30,7 +31,7 @@ function ActivityCard({ activity, onClick, className }) {
   const pointsStyle = {
     fontSize: '1.2rem',
     fontWeight: 'bold',
-    color: activity.completed ? '#2ed573' : '#00eaff'
+    color: hasCompletions ? '#2ed573' : '#00eaff'
   };
 
   const statusStyle = {
@@ -49,7 +50,14 @@ function ActivityCard({ activity, onClick, className }) {
     >
       <h3 style={nameStyle}>{activity.name}</h3>
       <div>
-        <div style={pointsStyle}>{totalPoints} points</div>
+        <div style={pointsStyle}>
+          {isCounterType 
+            ? counterValue > 0 
+              ? `${totalPoints} points` 
+              : `${activity.points} points`
+            : `${totalPoints} points`
+          }
+        </div>
         
         <div style={statusStyle}>
           {isCounterType ? (

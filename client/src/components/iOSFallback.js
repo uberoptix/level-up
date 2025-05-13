@@ -73,7 +73,8 @@ function iOSFallback({ activities, onActivityClick, isLoading = false }) {
       {activities.map(activity => {
         const isCounterType = activity.type === 'counter';
         const counterValue = activity.count || 0;
-        const isCompleted = isCounterType ? counterValue > 0 : activity.completed;
+        const hasCompletions = isCounterType && counterValue > 0;
+        const isCompleted = isCounterType ? hasCompletions : activity.completed;
         const totalPoints = isCounterType ? activity.points * counterValue : activity.points;
         
         return (
@@ -105,7 +106,12 @@ function iOSFallback({ activities, onActivityClick, isLoading = false }) {
               color: isCompleted ? '#2ed573' : '#00eaff',
               marginBottom: '7px'
             }}>
-              {totalPoints} points
+              {isCounterType 
+                ? counterValue > 0 
+                  ? `${totalPoints} points` 
+                  : `${activity.points} points`
+                : `${totalPoints} points`
+              }
             </div>
             <div style={{ 
               fontSize: '1rem',
