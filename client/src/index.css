@@ -4,16 +4,29 @@
   padding: 0;
 }
 
-:root, html, body, #root {
-  width: 100%;
-  height: 100%;
+:root {
   background-color: #0a0f1a;
   font-family: 'Share Tech Mono', monospace;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #0a0f1a;
+  font-family: 'Share Tech Mono', monospace;
+  overflow-x: hidden;
 }
 
 #root {
   position: relative;
   display: block;
+  min-height: 100vh;
+}
+
+@supports (-webkit-touch-callout: none) {
+  html, body, #root {
+    min-height: -webkit-fill-available;
+  }
 }
 
 /* Activity Grid Layout */

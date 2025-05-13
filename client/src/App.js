@@ -957,10 +957,7 @@ function App() {
       )}
 
       <div className="activities-wrapper" style={{ 
-        paddingBottom: isIOS ? '80px' : '40px',
-        overflowY: 'auto',
-        WebkitOverflowScrolling: 'touch',
-        height: isIOS ? 'calc(100vh - 130px)' : 'auto'
+        paddingBottom: isIOS ? '80px' : '40px'
       }}>
         {renderActivities()}
       </div>
