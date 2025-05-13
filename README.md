@@ -73,4 +73,8 @@ kill [PID]
 
 - Frontend: React, styled-components
 - Backend: Node.js, Express
-- Data Storage: JSON file 
+- Data Storage: JSON file
+
+## About
+
+A point-based motivation system to help kids build better habits through daily learning and personal growth. 
