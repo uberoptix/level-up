@@ -98,18 +98,18 @@ function App() {
   
   // Function to show a timed notification
   const displayNotification = useCallback((message) => {
-    // Special handling for iOS update notifications
-    if (isIOS && (message.includes('updated by another device') || message.includes('Connected to server') || message.includes('Connection to server'))) {
-      // For connection messages, use more descriptive text
-      if (message.includes('Connected to server') || message.includes('Connection to server')) {
-        showIOSNotification('Connected to server - changes will update in real-time');
-      } else {
+    // For iOS, all notifications should go through showIOSNotification
+    if (isIOS) {
+      if (message.includes('updated by another device') || 
+          message.includes('Connected to server') || 
+          message.includes('Connection to server')) {
         showIOSNotification(message);
       }
-      // Remove the alert popup approach
+      // Skip showing bottom notification for iOS
       return;
     }
     
+    // For non-iOS devices, continue with normal notification
     // Skip all connection-related notifications if we already show connected devices banner
     if (connectedClients > 1 && 
         (message.includes('connected to server') || 
@@ -985,10 +985,10 @@ function App() {
       {!usingStaticData && connectedClients > 1 && (
         <div className="connection-status-indicator" style={{
           position: 'fixed',
-          bottom: '15px',
+          bottom: isIOS ? '80px' : '15px', // Move up on iOS to avoid system UI
           left: '50%',
           transform: 'translateX(-50%)',
-          background: 'rgba(0, 150, 255, 0.8)',
+          background: 'rgba(0, 150, 255, 0.95)',
           color: 'white',
           padding: '8px 15px',
           borderRadius: '20px',
@@ -997,7 +997,8 @@ function App() {
           boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
           maxWidth: '90%',
           textAlign: 'center',
-          display: 'block' // Show for all devices
+          display: 'block', // Show for all devices
+          border: '2px solid rgba(0, 150, 255, 0.8)'
         }}>
           <span role="status">{connectedClients} devices connected</span>
         </div>
