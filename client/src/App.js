@@ -889,11 +889,10 @@ function App() {
             <button className="info-modal-close" onClick={() => setShowInfoModal(false)}>&times;</button>
             <h2 className="info-modal-header">What is Level Up?</h2>
             <div className="info-modal-body">
-              Level Up is a fun way to earn screen time by doing amazing work!<br/>
+              Level Up is a fun way to both learn and earn screen time!<br/>
               <div style={{ marginLeft: '0px', marginTop: '10px' }}>
-                🎮 You can earn up to 60 points every weekday (Mon-Fri).<br/>
-                🎯 Every task = points.<br/>
-                ⏳ 1 point = 1 min of screen time!
+                🎮 You can earn up to 60 points every weekday (Mon-Fri)<br/>
+                ⏳ Every task = points, every point = 1 min of screen time!.<br/>
               </div>
 
               <div style={{ marginTop: '20px' }}>
