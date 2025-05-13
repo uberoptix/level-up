@@ -22,7 +22,7 @@
   text-align: center;
   margin-bottom: 15px;
   padding: 0 16px;
-  padding-top: 20px;
+  padding-top: max(20px, env(safe-area-inset-top, 20px));
 }
 
 @media (max-width: 768px) {
@@ -309,17 +309,36 @@
     overflow-y: auto;
     overscroll-behavior-y: none;
     -webkit-overflow-scrolling: touch;
+    padding-top: env(safe-area-inset-top, 0);
+  }
+  
+  .app-header {
+    padding-top: max(20px, env(safe-area-inset-top, 20px));
+    margin-top: 0;
+  }
+
+  .app-title {
+    margin-top: 0;
+  }
+  
+  .activities-wrapper {
+    padding-bottom: max(80px, env(safe-area-inset-bottom, 80px));
+    margin-bottom: env(safe-area-inset-bottom, 0);
   }
   
   .activity-grid {
     overflow-y: visible;
-    padding-bottom: 80px !important;
+    padding-bottom: max(80px, env(safe-area-inset-bottom, 80px)) !important;
   }
   
   .activity-wrapper:last-child,
   .safari-container > *:last-child,
   .ios-card:last-child {
-    margin-bottom: 80px !important;
+    margin-bottom: max(80px, env(safe-area-inset-bottom, 80px)) !important;
+  }
+  
+  .connection-status-indicator {
+    bottom: max(80px, env(safe-area-inset-bottom, 80px));
   }
   
   footer {
@@ -327,6 +346,7 @@
     z-index: 20 !important;
     border-top: 2px solid rgba(255, 255, 255, 0.2) !important;
     margin-top: 5px !important;
+    padding-bottom: env(safe-area-inset-bottom, 20px) !important;
   }
 }
 

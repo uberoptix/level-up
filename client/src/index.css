@@ -10,29 +10,49 @@
   overscroll-behavior-y: none;
 }
 
-html, body {
+html {
+  width: 100%;
+  height: -webkit-fill-available;
+  background-color: #0a0f1a;
+}
+
+body {
   width: 100%;
   min-height: 100vh;
+  min-height: -webkit-fill-available;
   background-color: #0a0f1a;
   font-family: 'Share Tech Mono', monospace;
   overflow-x: hidden;
   overscroll-behavior-y: none;
   -webkit-overflow-scrolling: touch;
+  position: relative;
 }
 
 #root {
   position: relative;
   display: block;
   min-height: 100vh;
+  min-height: -webkit-fill-available;
   overscroll-behavior-y: none;
 }
 
 @supports (-webkit-touch-callout: none) {
-  html, body, #root {
+  html {
+    height: -webkit-fill-available;
+  }
+
+  body {
+    min-height: -webkit-fill-available;
+    position: fixed;
+    width: 100%;
+    overflow-y: auto;
+  }
+
+  #root {
     min-height: -webkit-fill-available;
     position: relative;
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: visible;
     -webkit-overflow-scrolling: touch;
   }
 }
