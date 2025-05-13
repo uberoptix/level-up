@@ -39,31 +39,24 @@ app.use(cors({
 }));
 app.use(bodyParser.json());
 
-const DATA_DIR = path.join(__dirname, 'data');
-const DATA_FILE = path.join(DATA_DIR, 'data.json');
+const DATA_FILE = path.join(__dirname, 'data.json');
 
-console.log(`Data directory: ${DATA_DIR}`);
 console.log(`Data file path: ${DATA_FILE}`);
-
-// Ensure data directory exists
-if (!fs.existsSync(DATA_DIR)) {
-  console.log(`Creating data directory: ${DATA_DIR}`);
-  fs.mkdirSync(DATA_DIR, { recursive: true });
-}
 
 // Initialize data file if it doesn't exist
 if (!fs.existsSync(DATA_FILE)) {
   console.log(`Data file not found, creating default data file: ${DATA_FILE}`);
   const initialData = {
     activities: [
-      { id: 1, name: "Studycat Spanish", points: 5, description: "Complete Spanish lessons on Studycat", completed: false, completedAt: null },
-      { id: 2, name: "Typing Practice", points: 5, description: "Practice typing for 15 minutes", completed: false, completedAt: null },
-      { id: 3, name: "Aesop's Fables", points: 10, description: "Read and discuss one Aesop's fable", completed: false, completedAt: null },
+      { id: 1, name: "Spanish Practice", points: 5, description: "Complete 1 lesson in Studycat on the iPad, or some equivalent activity approved by a parent.", completed: false, completedAt: null },
+      { id: 2, name: "Typing Practice", points: 5, description: "Complete 1 lesson in Typing Land on the iPad, or some equivalent activity approved by a parent.", completed: false, completedAt: null },
+      { id: 3, name: "Aesop's Fables", points: 10, description: "Read one Aesop's Fable and then complete the reflection page. First, summarize the story in your own words. Then, answer the questions about the moral and how it applies to your life today.", completed: false, completedAt: null },
       { id: 4, name: "Khan Academy Math", points: 15, description: "Complete assigned math exercises", completed: false, completedAt: null },
       { id: 5, name: "Spelling Workbook", points: 15, description: "Complete one page in spelling workbook", completed: false, completedAt: null },
-      { id: 6, name: "Extra Math Page", points: 5, description: "Complete an additional math page", completed: false, completedAt: null },
-      { id: 7, name: "Extra Spelling Page", points: 5, description: "Complete an additional spelling page", completed: false, completedAt: null },
-      { id: 8, name: "Word Hunter", points: 10, description: "Find and learn 5 new vocabulary words", completed: false, completedAt: null }
+      { id: 6, name: "Extra Math Page", points: 5, description: "Complete an additional math page. If you don't have one available, ask a parent to generate a new one. You can complete this multiple times per day for additional points.", completed: false, completedAt: null, count: 0, type: "counter" },
+      { id: 7, name: "Extra Spelling Page", points: 5, description: "Complete an additional spelling page. If you don't have one available, ask a parent to generate a new one. You can complete this multiple times per day for additional points.", completed: false, completedAt: null, count: 0, type: "counter" },
+      { id: 8, name: "Word Hunter Challenge", points: 10, description: "While you're reading (Aesop's, comics, etc), find 5 words you don't know. For each word, grab your pocket dictionary and look it up. Then, either tell us what it means (from memory), or write the meaning in your own words.", completed: false, completedAt: null },
+      { id: 9, name: "Logic Workbook", points: 5, description: "Complete 1 activity from your logic workbook. You can complete this multiple times per day for additional points.", completed: false, completedAt: null, count: 0, type: "counter" }
     ]
   };
   fs.writeFileSync(DATA_FILE, JSON.stringify(initialData, null, 2));

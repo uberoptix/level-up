@@ -17,4 +17,4 @@ services:
       retries: 3
       start_period: 20s
     command: >
-      sh -c "echo 'Content of server directory:' && ls -la /app/server && echo 'Content of data directory:' && ls -la /app/server/data || echo 'Data dir does not exist' && echo 'Creating data dir' && mkdir -p /app/server/data && echo 'Data directory created with:' && ls -la /app/server/data && echo 'Starting app' && npm start" 
+      sh -c "npm start" 
