@@ -438,7 +438,6 @@ function App() {
       }
       connectionNoticeShown.current = true;
     }
-    // Remove the notification for multiple clients since we have the persistent indicator
   }, [connectedClients, displayNotification, isIOS, showIOSNotification]);
 
   const handleActivityClick = (activity) => {
@@ -982,8 +981,8 @@ function App() {
         </div>
       )}
       
-      {/* Connected devices indicator - only show on non-iOS */}
-      {!usingStaticData && connectedClients > 1 && !isIOS && (
+      {/* Connected devices indicator - show on both iOS and non-iOS */}
+      {!usingStaticData && connectedClients > 1 && (
         <div className="connection-status-indicator" style={{
           position: 'fixed',
           bottom: '15px',
@@ -998,7 +997,7 @@ function App() {
           boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
           maxWidth: '90%',
           textAlign: 'center',
-          display: isIOS ? 'none' : 'block' // Extra safeguard to hide on iOS
+          display: 'block' // Show for all devices
         }}>
           <span role="status">{connectedClients} devices connected</span>
         </div>

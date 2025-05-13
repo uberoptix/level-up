@@ -795,10 +795,4 @@ footer {
   text-align: center;
 }
 
-/* Hide connection indicator specifically for iOS devices */
-@supports (-webkit-touch-callout: none) {
-  /* iOS-specific CSS */
-  .connection-status-indicator {
-    display: none !important;
-  }
-} 
+/* Connection indicator is now shown on all devices */
