@@ -416,58 +416,35 @@
   width: 100%;
   max-width: 1600px;
   margin: 0 auto;
-  padding: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
 }
 
 /* Safari cards in multiple columns */
 .safari-container > * {
-  width: calc(100% - 20px);
-  margin: 0 10px 20px 10px;
-  flex: 0 0 calc(100% - 20px);
-  min-width: 250px;
-}
-
-/* iPad specific grid layout */
-.safari-container.ipad-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-  padding: 20px;
-  width: calc(100% - 40px);
-}
-
-.safari-container.ipad-grid > * {
   width: 100%;
   margin: 0;
-  flex: none;
   min-width: 250px;
 }
 
 /* Media queries for different screen sizes */
 @media screen and (min-width: 768px) {
-  .safari-container > * {
-    width: calc(50% - 20px);
-    flex: 0 0 calc(50% - 20px);
-    min-width: 250px;
+  .safari-container {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   }
 }
 
 @media screen and (min-width: 1024px) {
-  .safari-container > * {
-    width: calc(33.33% - 20px);
-    flex: 0 0 calc(33.33% - 20px);
-    min-width: 250px;
+  .safari-container {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   }
 }
 
 @media screen and (min-width: 1400px) {
-  .safari-container > * {
-    width: calc(25% - 20px);
-    flex: 0 0 calc(25% - 20px);
-    min-width: 250px;
+  .safari-container {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   }
 }
 
@@ -477,19 +454,7 @@
   .safari-container {
     padding: 20px;
     max-width: 1600px;
-  }
-  
-  .safari-container > * {
-    width: calc(33.33% - 20px);
-    flex: 0 0 calc(33.33% - 20px);
-    max-width: calc(33.33% - 20px);
-    min-width: 250px;
-  }
-  
-  .safari-container.ipad-grid {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    max-width: 1600px;
-    gap: 20px;
   }
 }
 

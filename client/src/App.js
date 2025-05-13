@@ -169,7 +169,7 @@ function App() {
     setRequiredActivitiesCompleted(khanCompleted && spellingCompleted);
   }, []);
 
-  // Now define fetchActivities with useCallback
+  // Modify the fetchActivities function to use localStorage as fallback
   const fetchActivities = useCallback(async () => {
     try {
       const response = await axios.get(`${API_URL}/activities`, { timeout: 5000 });
@@ -194,7 +194,7 @@ function App() {
     } finally {
       setIsLoading(false);
     }
-  }, [calculateTotalPoints, displayNotification, setShowResetPrompt]);
+  }, [calculateTotalPoints, displayNotification]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
@@ -276,7 +276,6 @@ function App() {
       initialDataReceived = true;
       
       if (data.activities && data.activities.length > 0) {
-        // Since we received data from the server, we're not in static mode
         setUsingStaticData(false);
         setActivities(data.activities);
         calculateTotalPoints(data.activities);
@@ -285,7 +284,6 @@ function App() {
         }
       }
       
-      // Data has been loaded, whether empty or not
       setIsLoading(false);
     });
 
@@ -423,7 +421,7 @@ function App() {
         socketRef.current.disconnect();
       }
     };
-  }, [fetchActivities, usingStaticData, activities.length, calculateTotalPoints, displayNotification]); // Added displayNotification
+  }, [fetchActivities, usingStaticData, activities.length, calculateTotalPoints, displayNotification]);
 
   // Listen for connection status changes
   useEffect(() => {
