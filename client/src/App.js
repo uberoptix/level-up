@@ -29,6 +29,11 @@ const isIOSSafari = () => {
   const webkit = !!ua.match(/WebKit/i);
   const isSafari = isIOS && webkit && !ua.match(/CriOS/i) && !ua.match(/FxiOS/i);
   
+  // Add iPad-specific class if detected
+  if (isIPad) {
+    document.documentElement.setAttribute('data-device', 'ipad');
+  }
+  
   // Logging for debugging
   console.log('Device detection:', {
     userAgent: ua,
@@ -658,7 +663,6 @@ function App() {
       );
     }
     
-    // If we have no activities but we're not loading, show a message
     if (!activities || activities.length === 0) {
       return (
         <div style={{ 
@@ -700,15 +704,24 @@ function App() {
       );
     }
 
-    if (useTableFallback) {
-      // iOS Fallback with grid layout
-      return <IOSFallback 
-        activities={activities} 
-        onActivityClick={handleActivityClick} 
-        isLoading={isLoading} 
-      />;
+    // Check if device is iPad
+    const isIPad = navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1 || !!navigator.userAgent.match(/iPad/i);
+    
+    if (isIPad) {
+      // Use 3-column grid layout for iPad
+      return (
+        <div className="safari-container ipad-grid">
+          {activities.map(activity => (
+            <SafariActivityCard
+              key={activity.id}
+              activity={activity}
+              onClick={() => handleActivityClick(activity)}
+            />
+          ))}
+        </div>
+      );
     } else if (isIOS) {
-      // iOS Safari layout with grid of SafariActivityCard
+      // iPhone layout
       return (
         <div className="safari-container">
           {activities.map(activity => (

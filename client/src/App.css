@@ -429,6 +429,21 @@
   flex: 0 0 calc(100% - 20px);
 }
 
+/* iPad specific grid layout */
+.safari-container.ipad-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+.safari-container.ipad-grid > * {
+  width: 100%;
+  margin: 0;
+  flex: none;
+}
+
+/* Media queries for different screen sizes */
 @media screen and (min-width: 768px) {
   .safari-container > * {
     width: calc(50% - 20px);
@@ -436,12 +451,58 @@
   }
 }
 
+/* iPad specific media queries */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px),
        screen and (min-width: 768px) and (max-width: 1024px) {
   .safari-container > * {
     width: calc(33.33% - 20px);
     flex: 0 0 calc(33.33% - 20px);
     max-width: calc(33.33% - 20px);
+  }
+  
+  .safari-container.ipad-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Force 3-column layout on iPad */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  .safari-container.ipad-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .safari-container.ipad-grid > * {
+    width: 100% !important;
+    margin: 0 !important;
+    flex: none !important;
+  }
+}
+
+/* Additional iPad specific selector */
+html[data-device="ipad"] .safari-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+html[data-device="ipad"] .safari-container > * {
+  width: 100% !important;
+  margin: 0 !important;
+  flex: none !important;
+}
+
+/* Ensure proper spacing at the bottom of the container */
+.safari-container:last-child {
+  margin-bottom: 80px;
+}
+
+@supports (-webkit-touch-callout: none) {
+  .safari-container {
+    padding-bottom: 80px;
   }
 }
 
