@@ -436,8 +436,6 @@ function App() {
       // Only first connection shows notification once
       if (isIOS) {
         showIOSNotification('Connected to server - changes will update in real-time');
-      } else {
-        displayNotification('Connected to server. All updates will sync in real-time.');
       }
       connectionNoticeShown.current = true;
     }

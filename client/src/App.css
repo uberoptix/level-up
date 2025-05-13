@@ -337,10 +337,6 @@
     margin-bottom: max(80px, env(safe-area-inset-bottom, 80px)) !important;
   }
   
-  .connection-status-indicator {
-    bottom: max(80px, env(safe-area-inset-bottom, 80px));
-  }
-  
   footer {
     position: relative !important;
     z-index: 20 !important;
@@ -876,7 +872,7 @@ footer {
 /* Connection status indicator styling */
 .connection-status-indicator {
   position: fixed;
-  bottom: 15px;
+  bottom: 1rem;
   left: 50%;
   transform: translateX(-50%);
   background: rgba(0, 150, 255, 0.95);
@@ -898,7 +894,7 @@ footer {
 /* iOS-specific adjustments */
 @supports (-webkit-touch-callout: none) {
   .connection-status-indicator {
-    bottom: 80px;
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0));
     padding: 10px 20px;
     background: rgba(0, 150, 255, 0.95);
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
