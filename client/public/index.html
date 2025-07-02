@@ -56,18 +56,7 @@
         
         if (isiPad) {
           document.documentElement.setAttribute('data-device', 'ipad');
-          console.log("iPad detected, optimizing UI");
         }
-        
-        // Log helpful debugging info
-        console.log("Device detection:", {
-          userAgent: ua,
-          isiPad: isiPad,
-          platform: navigator.platform,
-          maxTouchPoints: navigator.maxTouchPoints,
-          width: window.innerWidth,
-          height: window.innerHeight
-        });
       })();
     </script>
   </body>

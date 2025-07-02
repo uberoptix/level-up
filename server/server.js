@@ -9,43 +9,111 @@ const socketIo = require('socket.io');
 // Environment configuration
 const PORT = process.env.PORT || 5001;
 const NODE_ENV = process.env.NODE_ENV || 'development';
-const CORS_ORIGIN = process.env.CORS_ORIGIN || '*';
+const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:3000';
 
 const app = express();
+
+// Security headers middleware
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' ws: wss:");
+  next();
+});
+
+// Input validation middleware
+const validateActivityId = (req, res, next) => {
+  const activityId = parseInt(req.params.id);
+  if (!activityId || activityId < 1 || activityId > 999999) {
+    return res.status(400).json({ message: 'Invalid activity ID' });
+  }
+  req.validatedActivityId = activityId;
+  next();
+};
+
+const validateActivityUpdate = (req, res, next) => {
+  const { completed, count } = req.body;
+  
+  if (typeof completed !== 'undefined' && typeof completed !== 'boolean') {
+    return res.status(400).json({ message: 'Completed must be a boolean' });
+  }
+  
+  if (typeof count !== 'undefined') {
+    const numCount = parseInt(count);
+    if (isNaN(numCount) || numCount < 0 || numCount > 100) {
+      return res.status(400).json({ message: 'Count must be a number between 0 and 100' });
+    }
+    req.body.count = numCount;
+  }
+  
+  next();
+};
 
 // Create HTTP server and Socket.IO instance
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: '*',
+    origin: CORS_ORIGIN.split(','),
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
   },
   pingTimeout: 60000,
   pingInterval: 25000,
   transports: ['websocket', 'polling'],
-  allowEIO3: true, // Enable compatibility with both Socket.IO v2 and v3 clients
-  maxHttpBufferSize: 1e8 // 100MB max buffer size for large payloads
+  allowEIO3: true,
+  maxHttpBufferSize: 1e6 // Reduced to 1MB
 });
 
-// Add CORS middleware with expanded options
+// Add CORS middleware with restricted origins
 app.use(cors({
-  origin: '*',
+  origin: CORS_ORIGIN.split(','),
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin', 'Cache-Control'],
   credentials: true,
   preflightContinue: false,
   optionsSuccessStatus: 204
 }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '1mb' }));
 
 const DATA_FILE = path.join(__dirname, 'data.json');
 
-console.log(`Data file path: ${DATA_FILE}`);
+// File locking mechanism
+const fileLocks = new Map();
+
+const acquireFileLock = async (filePath) => {
+  return new Promise((resolve) => {
+    const waitForLock = () => {
+      if (!fileLocks.has(filePath)) {
+        fileLocks.set(filePath, true);
+        resolve();
+      } else {
+        setTimeout(waitForLock, 10);
+      }
+    };
+    waitForLock();
+  });
+};
+
+const releaseFileLock = (filePath) => {
+  fileLocks.delete(filePath);
+};
+
+// Atomic file write function
+const writeDataFile = async (data) => {
+  await acquireFileLock(DATA_FILE);
+  try {
+    const tempFile = DATA_FILE + '.tmp';
+    fs.writeFileSync(tempFile, JSON.stringify(data, null, 2));
+    fs.renameSync(tempFile, DATA_FILE);
+  } finally {
+    releaseFileLock(DATA_FILE);
+  }
+};
 
 // Initialize data file if it doesn't exist
 if (!fs.existsSync(DATA_FILE)) {
-  console.log(`Data file not found, creating default data file: ${DATA_FILE}`);
   const initialData = {
     activities: [
       { id: 1, name: "Spanish Practice", points: 5, description: "Complete 1 lesson in Studycat on the iPad, or some equivalent activity approved by a parent.", completed: false, completedAt: null },
@@ -72,14 +140,15 @@ const getLatestActivitiesData = () => {
     const shouldReset = needsReset(data.activities);
     return { activities: data.activities, shouldReset };
   } catch (error) {
-    console.error('Error reading data file:', error);
+    if (NODE_ENV !== 'production') {
+      console.error('Error reading data file:', error);
+    }
     return { activities: [], shouldReset: false };
   }
 };
 
 io.on('connection', (socket) => {
   activeConnections++;
-  console.log(`New client connected: ${socket.id} (Total: ${activeConnections})`);
   
   // Send the latest activities to the new client
   const initialData = getLatestActivitiesData();
@@ -87,35 +156,20 @@ io.on('connection', (socket) => {
   
   // Handle explicit request for initial data
   socket.on('request-initial-data', () => {
-    console.log(`Client ${socket.id} requested initial data`);
     const data = getLatestActivitiesData();
     socket.emit('initial-data', data);
   });
   
-  // Let all clients know about the new connection
+  // Let all clients know about the new connection (removed sensitive info)
   io.emit('connection-count', { count: activeConnections });
   
   socket.on('disconnect', () => {
     activeConnections--;
-    console.log(`Client disconnected: ${socket.id} (Total: ${activeConnections})`);
     io.emit('connection-count', { count: activeConnections });
   });
 });
 
-// Add middleware to log all Socket.IO events for debugging
-io.use((socket, next) => {
-  const clientId = socket.handshake.query.clientId || 'unknown';
-  console.log(`Client connecting: ${clientId} (${socket.id})`);
-  
-  // Add additional properties to socket for tracking
-  socket.clientInfo = {
-    clientId,
-    connectTime: new Date().toISOString(),
-    userAgent: socket.handshake.headers['user-agent'] || 'unknown'
-  };
-  
-  next();
-});
+// Removed detailed client tracking for security
 
 // Helper function to check if activities need reset
 const needsReset = (activities) => {
@@ -129,20 +183,18 @@ const needsReset = (activities) => {
 
 // Get all activities
 app.get('/api/activities', (req, res) => {
-  const data = JSON.parse(fs.readFileSync(DATA_FILE));
-  const shouldReset = needsReset(data.activities);
-  res.json({ activities: data.activities, shouldReset });
+  try {
+    const data = JSON.parse(fs.readFileSync(DATA_FILE));
+    const shouldReset = needsReset(data.activities);
+    res.json({ activities: data.activities, shouldReset });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
 });
 
 // Update activity completion status
-app.put('/api/activities/:id', (req, res) => {
-  const activityId = parseInt(req.params.id);
-  console.log(`Received update request for activity ${activityId}:`, req.body);
-  console.log(`Request from: ${req.ip}, User-Agent: ${req.headers['user-agent'] || 'unknown'}`);
-  
-  if (isNaN(activityId)) {
-    return res.status(400).json({ message: 'Invalid activity ID' });
-  }
+app.put('/api/activities/:id', validateActivityId, validateActivityUpdate, async (req, res) => {
+  const activityId = req.validatedActivityId;
   
   try {
     // Read the latest data
@@ -151,8 +203,7 @@ app.put('/api/activities/:id', (req, res) => {
       const fileContents = fs.readFileSync(DATA_FILE);
       data = JSON.parse(fileContents);
     } catch (readError) {
-      console.error('Error reading data file:', readError);
-      return res.status(500).json({ message: 'Error reading data file' });
+      return res.status(500).json({ message: 'Server error' });
     }
     
     // Find the activity
@@ -165,13 +216,8 @@ app.put('/api/activities/:id', (req, res) => {
     let updated = false;
     
     if (activity.type === 'counter' && typeof req.body.count !== 'undefined') {
-      const newCount = parseInt(req.body.count);
-      if (isNaN(newCount) || newCount < 0) {
-        return res.status(400).json({ message: 'Invalid count value' });
-      }
-      
-      activity.count = newCount;
-      activity.completed = newCount > 0;
+      activity.count = req.body.count;
+      activity.completed = req.body.count > 0;
       activity.completedAt = activity.completed ? new Date().toISOString() : null;
       updated = true;
     } else if (typeof req.body.completed !== 'undefined') {
@@ -184,37 +230,31 @@ app.put('/api/activities/:id', (req, res) => {
       return res.status(400).json({ message: 'No valid update parameters provided' });
     }
     
-    // Save the data
+    // Save the data atomically
     try {
-      fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
+      await writeDataFile(data);
     } catch (writeError) {
-      console.error('Error writing to data file:', writeError);
-      return res.status(500).json({ message: 'Error writing to data file' });
+      return res.status(500).json({ message: 'Server error' });
     }
     
-    // Broadcast the update
-    console.log(`Broadcasting activity update: ID ${activity.id}, completed=${activity.completed}`);
-    
+    // Broadcast the update (removed sensitive information)
     const updatePayload = { 
       activities: data.activities,
       activityId: activity.id,
-      timestamp: new Date().toISOString(),
-      updatedBy: req.ip || 'unknown'
+      timestamp: new Date().toISOString()
     };
     
     io.emit('activity-updated', updatePayload);
-    console.log(`Activity update broadcast complete, active connections: ${activeConnections}`);
     
     // Return success
     res.status(200).json(activity);
   } catch (error) {
-    console.error('Error updating activity:', error);
-    res.status(500).json({ message: 'Server error updating activity' });
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
 // Reset all activities (for new day)
-app.post('/api/reset', (req, res) => {
+app.post('/api/reset', async (req, res) => {
   try {
     const data = JSON.parse(fs.readFileSync(DATA_FILE));
     data.activities.forEach(activity => {
@@ -226,21 +266,18 @@ app.post('/api/reset', (req, res) => {
         activity.count = 0;
       }
     });
-    fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
     
-    // Emit reset event to all connected clients
-    console.log('Broadcasting activities reset to all clients');
-    console.log(`Connected clients: ${activeConnections}`);
+    await writeDataFile(data);
+    
+    // Emit reset event to all connected clients (removed sensitive info)
     io.emit('activities-reset', { 
       activities: data.activities,
-      timestamp: new Date().toISOString(),
-      resetBy: req.ip || 'unknown'
+      timestamp: new Date().toISOString()
     });
     
     res.json({ message: 'Activities reset successfully' });
   } catch (error) {
-    console.error('Error resetting activities:', error);
-    res.status(500).json({ message: 'Server error resetting activities' });
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
@@ -248,8 +285,7 @@ app.post('/api/reset', (req, res) => {
 app.get('/api/health', (req, res) => {
   res.status(200).json({
     status: 'OK',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime()
+    timestamp: new Date().toISOString()
   });
 });
 
@@ -273,11 +309,12 @@ const startServer = (initialPort) => {
   for (let attempt = 0; attempt < maxPortAttempts; attempt++) {
     try {
       server.listen(port);
-      console.log(`Server running on port ${port} in ${NODE_ENV} mode`);
-      console.log(`CORS enabled for origin: ${CORS_ORIGIN}`);
+      if (NODE_ENV !== 'production') {
+        console.log(`Server running on port ${port} in ${NODE_ENV} mode`);
+        console.log(`CORS enabled for origin: ${CORS_ORIGIN}`);
+      }
       return;
     } catch (error) {
-      console.error(`Port ${port} is not available, trying port ${port + 1}`);
       port += 1;
     }
   }

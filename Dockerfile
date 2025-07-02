@@ -22,12 +22,23 @@ RUN npm run build
 
 FROM node:16-alpine
 
+# Create a non-root user
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S appuser -u 1001
+
 WORKDIR /app
-COPY --from=build /app/server ./server
-COPY --from=build /app/client/build ./client/build
-COPY package*.json ./
+
+# Copy built application with proper ownership
+COPY --from=build --chown=appuser:nodejs /app/server ./server
+COPY --from=build --chown=appuser:nodejs /app/client/build ./client/build
+COPY --chown=appuser:nodejs package*.json ./
+
+# Switch to non-root user before installing dependencies
+USER appuser
 
 RUN npm ci --production
 
 EXPOSE 5001
+
+# Run as non-root user
 CMD ["npm", "start"] 
